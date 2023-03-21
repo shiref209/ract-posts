@@ -16,6 +16,7 @@ const Posts = () => {
         if (response.data){
             setIsSuccess('true')
             setData(response.data)
+            console.log(data)
         };
         
       })
@@ -48,22 +49,24 @@ const Posts = () => {
         >
           <h2>{title}</h2>
           <p>{body}</p>
+     
+          <Link to={`/posts/${id}`} state={{title,body,id}}  style={{marginLeft:'auto'}}>
           <button
-            style={{
-              border: "none",
-              backgroundColor: "blueviolet",
-              color: "whitesmoke",
-              marginLeft: "auto",
-              width: "70px",
-              height: "70px",
-            }}
+           style={{
+            border: "none",
+            backgroundColor: "blueviolet",
+            color: "whitesmoke",
+            width: "10vw",
+            height: "5vh",
+            borderRadius:'10px',
+            cursor:'pointer'
+          }}
           >
-          <Link to={`/posts/${id}`} state={{title,body,id}}>
-
             More Details
+          </button>
+
           </Link>
 
-          </button>
         </div>
       );
     });
