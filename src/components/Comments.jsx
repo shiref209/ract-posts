@@ -10,7 +10,6 @@ const Comments = ({ id }) => {
       .get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
       .then(function (response) {
         // handle success
-        console.log(response);
 
         if (response.data) {
           setFetchedComments(response.data);

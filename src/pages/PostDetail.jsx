@@ -1,14 +1,12 @@
 import React from "react";
 import { useLocation, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Comments from "../components/Comments";
 
 const PostDetail = () => {
   const location = useLocation();
   const { title, body, id } = location.state;
   const [isSuccess, setIsSuccess] = useState("false");
-  const [data, setData] = useState(null);
 
   return (
     <div

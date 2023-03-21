@@ -1,11 +1,12 @@
-import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Search from "../components/Search";
 
 const Posts = () => {
   const [isSuccess, setIsSuccess] = useState("false");
-  const [data, setData] = useState(null);
+  const [posts, setPosts] = useState(null);
+  const [filteredPosts, setFilteredPosts] = useState(posts);
   useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/posts")
@@ -13,12 +14,11 @@ const Posts = () => {
         // handle success
         // console.log(response);
 
-        if (response.data){
-            setIsSuccess('true')
-            setData(response.data)
-            console.log(data)
-        };
-        
+        if (response.data) {
+          setIsSuccess("true");
+          setPosts(response.data);
+          setFilteredPosts(posts);
+        }
       })
       .catch(function (error) {
         // handle error
@@ -26,12 +26,12 @@ const Posts = () => {
       });
   }, []);
 
-  const getPosts = () => {
+  const getPosts = (data) => {
     if (!isSuccess) {
       console.log("failed");
       return;
     }
-
+    filteredPosts ? (data = filteredPosts) : (data = posts);
     return data.map((item) => {
       const { title, id, body } = item;
       return (
@@ -40,33 +40,36 @@ const Posts = () => {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "15px",
+            gap: "5px",
             textAlign: "left",
             width: "50%",
-            border: "2px solid grey",
+            border: "2px solid #cbafe6",
             padding: "5px",
+            borderRadius: "5px",
           }}
         >
-          <h2>{title}</h2>
-          <p>{body}</p>
-     
-          <Link to={`/posts/${id}`} state={{title,body,id}}  style={{marginLeft:'auto'}}>
-          <button
-           style={{
-            border: "none",
-            backgroundColor: "blueviolet",
-            color: "whitesmoke",
-            width: "10vw",
-            height: "5vh",
-            borderRadius:'10px',
-            cursor:'pointer'
-          }}
+          <h4>{title}</h4>
+          <p>{`${body.split(" ").slice(0, 5).join(" ")} ...`}</p>
+
+          <Link
+            to={`/posts/${id}`}
+            state={{ title, body, id }}
+            style={{ marginLeft: "auto" }}
           >
-            More Details
-          </button>
-
+            <button
+              style={{
+                border: "none",
+                backgroundColor: "blueviolet",
+                color: "whitesmoke",
+                width: "10vw",
+                height: "5vh",
+                borderRadius: "10px",
+                cursor: "pointer",
+              }}
+            >
+              More Details
+            </button>
           </Link>
-
         </div>
       );
     });
@@ -79,10 +82,11 @@ const Posts = () => {
           alignItems: "left",
           justifyContent: "center",
           flexDirection: "column",
-          gap:'15px'
+          gap: "1px",
         }}
       >
-        {data && getPosts()}
+        <Search posts={posts} getFilteredPosts={setFilteredPosts} />
+        {posts && getPosts()}
       </div>
     </div>
   );
