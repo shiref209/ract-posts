@@ -22,7 +22,7 @@ const Comments = ({ id }) => {
   }, [id]);
   const getComments = () => {
     if (!fetchedComments) {
-      return;
+      return <div>No Comments For This Post</div>
     }
     return fetchedComments.map((item, index) => (
       <div
